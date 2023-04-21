@@ -46,15 +46,63 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Notification {
+  id           Int         @id @default(autoincrement())
+  read         Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  comment      Comment     @relation(fields: [commentId], references: [id])
+  commentId    Int
+  taggedUser   TaggedUser? @relation(fields: [taggedUserId], references: [id])
+  taggedUserId Int?
+}
+
+model TaggedUser {
+  id           Int            @id @default(autoincrement())
+  comment      Comment        @relation(fields: [commentId], references: [id])
+  user         User           @relation(fields: [userId], references: [id])
+  commentId    Int
+  userId       String
+  Notification Notification[]
+}
+
+model Comment {
+  id          Int            @id @default(autoincrement())
+  body        String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  authorId    String
+  user        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  image       Image          @relation(fields: [imageId], references: [id])
+  imageId     Int
+  notified    Notification[]
+  taggedUsers TaggedUser[]
+}
+
+model Image {
+  id          Int       @id @default(autoincrement())
+  url         String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+}
+
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  Post          Post[]
+  id             String       @id @default(cuid())
+  name           String?
+  email          String?      @unique
+  emailVerified  DateTime?
+  image          String?
+  accounts       Account[]
+  sessions       Session[]
+  Post           Post[]
+  images         Image[]
+  comments       Comment[]
+  commentId      Int?
+  taggedComments TaggedUser[]
 }
 
 model VerificationToken {
