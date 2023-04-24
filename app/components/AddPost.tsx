@@ -1,12 +1,14 @@
 'use client'
 
 import { title } from "process"
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import {useMutation,useQueryClient} from '@tanstack/react-query';
 import axios, { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 
-export default function AddPost(){
+interface AddPostProps{}
+
+const AddPost=forwardRef<HTMLFormElement,AddPostProps>((props,ref)=>{
     const [title,setTitle]=useState('');
     const [isDisabled,setIsDisabled]=useState(false);
     let toastPostID:string;
@@ -41,7 +43,7 @@ export default function AddPost(){
         // setTitle('');
     }
     return (
-        <form onSubmit={submitPost} className="bg-white my-8 p-8 rounded-md">
+        <form ref={ref} onSubmit={submitPost} className="bg-white my-8 p-8 rounded-md absolute right-0 top-0">
             <div className="flex flex-col my-4">
                 <textarea onChange={(e)=>setTitle(e.target.value)} name="title" value={title}
                 placeholder="What's on your mind?"
@@ -60,4 +62,8 @@ export default function AddPost(){
             </div>
         </form>
     )
-}
+})
+
+AddPost.displayName="AddPost";
+
+export default AddPost;
