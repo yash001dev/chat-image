@@ -11,36 +11,36 @@ export default function AddImage(){
     let toastPostID:string;
     
     //Create a post
-    const {mutate}=useMutation(
-        async (url:string)=>{
-            await axios.post('/api/image/addImage',{url:url})
-        },
-        {
-            onError:(error)=>{
-                if(error instanceof AxiosError){
-                    toast.error(error?.response?.data.message,{id:toastPostID});
-                }
-                setIsDisabled(false);
-            },
-            onSuccess:(data)=>{
-                toast.success("Post has been made 🔥",{id:toastPostID})
-                setUrl('');
-                setIsDisabled(false);
-            }
-        }
-    )
-    const submitPost=async (e:React.FormEvent)=>{
-        e.preventDefault();
-        setIsDisabled(true);
-        toastPostID=toast.loading("Creating your post",{
-            id:toastPostID
-        })
-        await mutate(url);
-        setIsDisabled(false);
-        setUrl('');
-    }
+    // const {mutate}=useMutation(
+    //     async (url:string)=>{
+    //         await axios.post('/api/image/addImage',{url:url})
+    //     },
+    //     {
+    //         onError:(error)=>{
+    //             if(error instanceof AxiosError){
+    //                 toast.error(error?.response?.data.message,{id:toastPostID});
+    //             }
+    //             setIsDisabled(false);
+    //         },
+    //         onSuccess:(data)=>{
+    //             toast.success("Post has been made 🔥",{id:toastPostID})
+    //             setUrl('');
+    //             setIsDisabled(false);
+    //         }
+    //     }
+    // )
+    // const submitPost=async (e:React.FormEvent)=>{
+    //     e.preventDefault();
+    //     setIsDisabled(true);
+    //     toastPostID=toast.loading("Creating your post",{
+    //         id:toastPostID
+    //     })
+    //     await mutate(url);
+    //     setIsDisabled(false);
+    //     setUrl('');
+    // }
     return (
-        <form onSubmit={submitPost} className="bg-white my-8 p-8 rounded-md">
+        <form  className="bg-white my-8 p-8 rounded-md">
             <div className="flex flex-col my-4">
                 <input type="text" onChange={(e)=>setUrl(e.target.value)} name="url" value={url}
                 placeholder="What's on your mind?"

@@ -14,14 +14,13 @@ export interface RootState {
 }
 
 // Create your Redux store with the reducers
-const makeStore: MakeStore<Store<RootState, AnyAction>> = () =>
-  configureStore({
-    reducer: {
-      user: userReducer,
-    },
-  });
-
-// Export the wrapper
-export const wrapper = createWrapper<Store<RootState>>(makeStore, {
-  debug: process.env.NODE_ENV === "development",
+export const makeStore = configureStore({
+  reducer: {
+    user: userReducer,
+  },
 });
+
+// // Export the wrapper
+// export const wrapper = createWrapper<Store<RootState>>(makeStore, {
+//   debug: process.env.NODE_ENV === "development",
+// });

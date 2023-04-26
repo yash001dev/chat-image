@@ -2,6 +2,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import ImageAnnotationApp from './ImageAnnotation';
+import { BsCommand } from 'react-icons/bs';
+import clsx from 'clsx';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { toogleCommentMode } from '../store/userReducer';
 
 interface PostProps{
     avatar:string;
@@ -10,20 +15,33 @@ interface PostProps{
     id:string;
     comments:string[];
     childrenDetails:any;
+    createComment:()=>void;
 }
 
-export default function Post({avatar,name,postTitle,id,comments}:PostProps){
+export default function Post({avatar,name,postTitle,id,comments,createComment}:PostProps){
+    const userData=useSelector((state:any)=>state.user);
+    const dispatch=useDispatch();
     return(
         <div className='bg-white my-8 p-8 rounded-lg flex flex-col'>
-            <div className='flex items-center gap-2'>
+            <div className='flex items-center justify-between'>
+            <div className='flex items-center'>
             <Image
                 className='rounded-full'
-                width={32}
-                height={32}
+                width={38}
+                height={38}
                 src={avatar}
                 alt='avatar'
                 />
-                <h3 className='font-bold text-gray-700'>{"anyy"}</h3>
+                <h3 className='font-bold text-gray-700 mx-2'>{"anyy"}</h3>
+            </div>
+            <div>
+                <BsCommand onClick={()=>dispatch(toogleCommentMode())} className={clsx(
+                    'cursor-pointer text-2xl',
+                    {
+                        ' text-teal-700 ':userData?.commentMode,
+                    }
+                )}/>
+            </div>
             </div>
             
             <div className='my-8'>

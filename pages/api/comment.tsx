@@ -2,13 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
 import prisma from '../../prisma/client'
-import { Server } from "socket.io";
 
-let io:Server;
 
-export function setSocketInstance(socket:Server){
-    io=socket;
-}
 
 export default async function handler(
     req: NextApiRequest,
