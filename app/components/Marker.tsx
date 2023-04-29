@@ -1,9 +1,8 @@
 import { useState } from "react";
 import AddPost from "./AddPost";
 
-const Marker = ({ x, y, number }) => {
-  const size = 40;
-  const fontSize = 18;
+const Marker = ({ x, y, number,closeDialouge,onHoverFunction=()=>{},comment="",commentId }) => {
+  const size = 40;const fontSize = 18;
   const color = "#4299e1";
   const backgroundColor = "#f7fafc";
     let [hovered, setHovered] = useState(false);
@@ -11,15 +10,16 @@ const Marker = ({ x, y, number }) => {
   return (
     <div
       onMouseEnter={(e) => {
-        console.log("Mouse Hover is called.")
-        setHovered(true);
+        if(closeDialouge){
+          console.log("HERE IT IS CLOSE DIALOUGE")
+          onHoverFunction(e,x,y,comment,commentId)
+        }
       }}
       onMouseLeave={(e) => {
         setHovered(false);
       }}
 
       onClick={(e) => {
-        console.log("Mouse click",e);
 
       }}
       className="border-solid border-2 text-teal-400  border-teal-400 hover:border-teal-600"

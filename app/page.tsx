@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getSession } from "next-auth/react";
+import Gallery from "./components/Gallary";
 
 const socket=io("http://localhost:3001")
 
@@ -27,13 +28,9 @@ interface CommentParams{
 }
 
 export default function Home() {
-    const {data,error,isLoading}=useQuery({
-        queryFn:allImage,
-        queryKey:["authImage"]
-    });
+    
 
     const userData=useSelector((state:any)=>state.user);
-    console.log("userData:",userData);
     const [userPrivateInfo,setUserPrivateInfo]=useState<Object>({});
 
     useEffect(()=>{
@@ -43,47 +40,21 @@ export default function Home() {
         }
         getUserData();
     },[]);
-    console.log("userPrivateInfo:",userPrivateInfo);
-    // useEffect(()=>{
-    //     socket.on("connect",()=>{
-    //         console.log("Connected");
-    //     });
-    //     socket.on("disconnect",()=>{
-    //         console.log("Disconnected");
-    //     });
-    // },[]);
 
-    useEffect(()=>{
-        socket.on("receiveComment",(comment)=>{
-            console.log("comment:",comment);
-        });
-    },[])
-
-    const createComment=async({body,imageId}:CommentParams)=>{
-        socket.emit("sendComment",{body:"hey guy",imageId:"1",author:userPrivateInfo});
-    };
-
-    const editComment=async()=>{
-        socket.emit("editComment",{text:"Hello",imageId:"123"});
-    }
-    
+    const {data,error,isLoading}=useQuery({
+        queryFn:allImage,
+        queryKey:["authImage"],
+        
+    });
 
     if(error) return <div>Error</div>;
     if(isLoading) return <div>Loading...</div>;
-    console.log("data:",data);
     return(
         <div>
-            {/* <h1>Hello next</h1> */}
+
             <AddImage/>
-            <button onClick={createComment}>Create Comment</button>
-             <Post name={data?.image} postTitle="anything" avatar={data?.image} id={data?.id} />
-            {/* {data.map((post:any)=>{
-                return <Post postTitle={post?.title} key={post.id} name={post.user.name} avatar={post.user.image} id="123" 
-                comments={post?.comments} />
-            })} */}
-            {/* <button onClick={createComment}>Create Comment</button>
-            <Post comments={} name={data?.image} postTitle="anything" avatar={data?.image} id={data?.id} /> */}
-            {/* <AddImage/> */}
+
+            <Gallery data={data?.images}/>
         </div>
     );
 }

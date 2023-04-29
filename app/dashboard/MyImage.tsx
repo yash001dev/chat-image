@@ -16,7 +16,6 @@ export default function MyImage() {
     })
     if (isLoading) return <p>Loading...</p>
     if (isError) return <p>Error</p>
-    console.log(data)
     return (
         <div>
             <div className='bg-white my-8 p-8 rounded-lg'>

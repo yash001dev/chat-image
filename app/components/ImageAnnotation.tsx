@@ -1,21 +1,20 @@
 import { useState } from "react";
 import ImageAnnotator from "./ImageAnnotator";
 
-const ImageAnnotationApp = ({ commentMode,url }) => {
-  const [annotations, setAnnotations] = useState([]);
-  const imageUrl =
-    "https://cdn.pixabay.com/photo/2023/04/16/09/54/bird-7929733_960_720.jpg";
+export interface ImageAnnotationAppProps{
+    commentMode:boolean;
+    url:string;
+    imageId:number;
+}
 
-  const handleAnnotate = (annotation) => {
-    setAnnotations((prevAnnotations) => [...prevAnnotations, annotation]);
-  };
-
+const ImageAnnotationApp = ({ commentMode,url,imageId }:ImageAnnotationAppProps) => {
+  console.log("CM MODE:",commentMode)
   return (
     <div>
       <ImageAnnotator
-        commentMode={true}
-        imageUrl={url??imageUrl}
-        onAnnotate={handleAnnotate}
+        commentMode={commentMode}
+        url={url}
+        imageId={imageId}
       />
       {/* <ul>
         {annotations.map((annotation, index) => (

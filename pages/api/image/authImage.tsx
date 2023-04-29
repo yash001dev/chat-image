@@ -12,7 +12,6 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
 
         //Get Auth Users Image
         try{
-            console.log("GETT DATA:::")
             // const data=await prisma.user.findUnique({
             //     where:{email:session?.user?.email},
             //     include:{
@@ -32,7 +31,6 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
                     images:true
                 }
             })
-            console.log("DATA::",data)
             res.status(200).json(data)
         }catch(err){
             res.status(403).json({err:"Error has occurred while creating a image"})

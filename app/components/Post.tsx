@@ -9,20 +9,17 @@ import { useDispatch } from 'react-redux';
 import { toogleCommentMode } from '../store/userReducer';
 
 interface PostProps{
+    avatarName:string;
+    imageId:number;
+    imageUrl:string;
     avatar:string;
-    name:string;
-    postTitle:string;
-    id:string;
-    comments:string[];
-    childrenDetails:any;
-    createComment:()=>void;
 }
 
-export default function Post({avatar,name,postTitle,id,comments,createComment}:PostProps){
-    const userData=useSelector((state:any)=>state.user);
+export default function Post({avatarName,imageId,imageUrl,avatar}:PostProps){
+    const {commentMode}=useSelector((state:any)=>state.user);
     const dispatch=useDispatch();
     return(
-        <div className='bg-white my-8 p-8 rounded-lg flex flex-col'>
+        <div className='mx-4 md:mx-48 xl:mx-96 bg-gray-200 my-8 p-8 rounded-lg flex flex-col'>
             <div className='flex items-center justify-between'>
             <div className='flex items-center'>
             <Image
@@ -32,30 +29,24 @@ export default function Post({avatar,name,postTitle,id,comments,createComment}:P
                 src={avatar}
                 alt='avatar'
                 />
-                <h3 className='font-bold text-gray-700 mx-2'>{"anyy"}</h3>
+                <h3 className='font-bold text-gray-700 mx-2'>{avatarName}</h3>
             </div>
             <div>
                 <BsCommand onClick={()=>dispatch(toogleCommentMode())} className={clsx(
                     'cursor-pointer text-2xl',
                     {
-                        ' text-teal-700 ':userData?.commentMode,
+                        ' text-teal-700 ':commentMode,
                     }
                 )}/>
             </div>
             </div>
             
             <div className='my-8'>
-                {/* <Image width={500} height={400} className='h-full w-full object-cover' src={"https://cdn.pixabay.com/photo/2016/11/19/18/06/feet-1840619_960_720.jpg"} alt="ANy" /> */}
-                <ImageAnnotationApp commentMode={true} url="https://cdn.pixabay.com/photo/2016/11/19/18/06/feet-1840619_960_720.jpg" />
-                <p className='break-all'>{"any"}</p>
+              
+                <ImageAnnotationApp imageId={imageId} commentMode={commentMode} url={imageUrl} />
+                
             </div>
-            <div className='flex gap-4 cursor-pointer items-center'>
-                <Link href={`/post/${id}`}>
-                    <p className="text-sm font-bold text-gray-700">
-                        {comments?.length ?? 0} Comments
-                    </p>
-                </Link>
-            </div>
+           
         </div>
     )
 }
